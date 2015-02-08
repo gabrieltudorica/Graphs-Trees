@@ -1,21 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Graphs.Exceptions;
 
 namespace Graphs
 {
     public class Node
     {
         private readonly string value;
-        private readonly List<Node> neighbors;
+        private readonly Dictionary<Node, int> neighbors;
  
         public Node(string value)
         {
             this.value = value;
-            neighbors = new List<Node>();
+            neighbors = new Dictionary<Node, int>();
         }
 
-        public void AddNeighbor(Node neighbor)
+        public void AddNeighbor(Node neighbor, int cost)
         {
-            neighbors.Add(neighbor);
+            neighbors.Add(neighbor, cost);
         }
 
         public string GetValue()
@@ -25,8 +27,8 @@ namespace Graphs
 
         public IEnumerable<Node> GetNeighbors()
         {
-            return neighbors;
-        }        
+            return neighbors.Select(neighbor => neighbor.Key).ToList();
+        }
 
         public void RemoveNeighbor(Node neighbor)
         {
@@ -38,7 +40,17 @@ namespace Graphs
 
         public bool HasNeighbor(Node neighbor)
         {
-            return neighbors.Contains(neighbor);
+            return neighbors.ContainsKey(neighbor);
+        }
+
+        public int GetCostTo(Node neighbor)
+        {
+            if (!HasNeighbor(neighbor))
+            {
+                throw new NeighborNotFoundException();
+            }
+
+            return neighbors[neighbor];
         }
     }
 }

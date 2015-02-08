@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Graphs.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Graphs.Tests
@@ -31,10 +32,10 @@ namespace Graphs.Tests
             Node node = GetNodeWith("initialValue");
             Node neighbor = GetNodeWith("neighbor");
 
-            node.AddNeighbor(neighbor);
+            node.AddNeighbor(neighbor, 0);
 
             Assert.AreEqual(1, node.GetNeighbors().ToList().Count);
-            Assert.AreEqual(neighbor, node.GetNeighbors().ToList()[0]);
+            Assert.IsTrue(node.HasNeighbor(neighbor));
         }
 
         [TestMethod]
@@ -43,7 +44,7 @@ namespace Graphs.Tests
             Node node = GetNodeWith("initialValue");
             Node neighbor = GetNodeWith("neighbor");
 
-            node.AddNeighbor(neighbor);
+            node.AddNeighbor(neighbor, 0);
 
             Assert.IsTrue(node.HasNeighbor(neighbor));
         }
@@ -53,25 +54,20 @@ namespace Graphs.Tests
         {
             Node node = GetNodeWith("initialValue");
             Node neighbor = GetNodeWith("neighbor");
-            Node anotherNode = GetNodeWith("anotherNode");
 
-            node.AddNeighbor(neighbor);
-
-            Assert.IsFalse(node.HasNeighbor(anotherNode));
+            Assert.IsFalse(node.HasNeighbor(neighbor));
         }
 
         [TestMethod]
-        public void When_NeighborIsNotAddedToNodeAndIsRemoved_NeighborCollectionIsChanged()
+        public void When_NeighborIsNotAddedToNode_RemovalOfAnUnexistingNeighborDoesNotChangeTheNeighborCollection()
         {
             Node node = GetNodeWith("initialValue");
             Node neighbor = GetNodeWith("neighbor");
-            Node anotherNeighbor = GetNodeWith("anotherNeighbor");
-            node.AddNeighbor(neighbor);
             IEnumerable<Node> expectedNeighbors = node.GetNeighbors();
 
-            node.RemoveNeighbor(anotherNeighbor);
+            node.RemoveNeighbor(neighbor);
 
-            Assert.AreEqual(expectedNeighbors, node.GetNeighbors());
+            CollectionAssert.AreEqual(expectedNeighbors.ToList(), node.GetNeighbors().ToList());
         }
 
         [TestMethod]
@@ -79,14 +75,33 @@ namespace Graphs.Tests
         {
             Node node = GetNodeWith("initialValue");
             Node neighbor = GetNodeWith("neighbor");
-            Node anotherNeighbor = GetNodeWith("anotherNeighbor");
-            node.AddNeighbor(neighbor);
-            node.AddNeighbor(anotherNeighbor);
+            node.AddNeighbor(neighbor, 0);
 
-            node.RemoveNeighbor(anotherNeighbor);
+            node.RemoveNeighbor(neighbor);
 
-            Assert.AreEqual(1, node.GetNeighbors().ToList().Count);
-            Assert.IsFalse(node.HasNeighbor(anotherNeighbor));
+            Assert.AreEqual(0, node.GetNeighbors().ToList().Count);
+            Assert.IsFalse(node.HasNeighbor(neighbor));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NeighborNotFoundException))]
+        public void When_NeighborIsNotAddedToNode_RetreivingCostToAnInexistingNeighborThrowsException()
+        {
+            Node node = GetNodeWith("initialValue");
+            Node neighbor = GetNodeWith("neighbor");
+
+            node.GetCostTo(neighbor);
+        }
+
+        [TestMethod]
+        public void When_NeighborIsAddedToNode_TheCorrectCostToNeighborIsReturned()
+        {
+            Node node = GetNodeWith("initialValue");
+            Node neighbor = GetNodeWith("neighbor");
+            
+            node.AddNeighbor(neighbor,5);
+
+            Assert.AreEqual(5, node.GetCostTo(neighbor));
         }
 
         private static Node GetNodeWith(string initialValue)
