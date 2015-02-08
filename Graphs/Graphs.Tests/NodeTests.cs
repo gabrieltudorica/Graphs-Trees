@@ -10,7 +10,7 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_NodeIsInitializedWithAValue_CorrectValueIsReturned()
         {
-            Node node = GetNodeWith("initialValue");
+            var node = new Node("initialValue");
 
             Assert.AreEqual("initialValue", node.GetValue());
         }
@@ -18,7 +18,7 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_NodeIsInitialized_NeighborCollectionIsEmpty()
         {
-            Node node = GetNodeWith("initialValue");
+            var node = new Node("initialValue");
 
             Assert.AreEqual(0, node.GetNeighbors().ToList().Count);
         }
@@ -26,8 +26,8 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_NodeContainsNeighbor_CorrectNeighborCollectionIsReturned()
         {
-            Node node = GetNodeWith("initialValue");
-            Node neighbor = GetNodeWith("neighbor");
+            var node = new Node("initialValue");
+            var neighbor = new Node("neighbor");
 
             node.AddNeighbor(neighbor, 0);
 
@@ -38,8 +38,8 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_NodeContainsNeighbor_NodeRecognizesItAsNeighbor()
         {
-            Node node = GetNodeWith("initialValue");
-            Node neighbor = GetNodeWith("neighbor");
+            var node = new Node("initialValue");
+            var neighbor = new Node("neighbor");
 
             node.AddNeighbor(neighbor, 0);
 
@@ -49,8 +49,8 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_NodeDoesNotContainNeighbor_NodeWillNotRecognizeNeighbor()
         {
-            Node node = GetNodeWith("initialValue");
-            Node neighbor = GetNodeWith("neighbor");
+            var node = new Node("initialValue");
+            var neighbor = new Node("neighbor");
 
             Assert.IsFalse(node.HasNeighbor(neighbor));
         }
@@ -59,8 +59,8 @@ namespace Graphs.Tests
         [ExpectedException(typeof(NeighborNotFoundException))]
         public void When_NodeDoesNotContainNeighbor_RemovalOfAnUnexistingNeighborThrowsException()
         {
-            Node node = GetNodeWith("initialValue");
-            Node neighbor = GetNodeWith("neighbor");
+            var node = new Node("initialValue");
+            var neighbor = new Node("neighbor");
 
             node.RemoveNeighbor(neighbor);
         }
@@ -68,8 +68,8 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_NodeRemovesNeighbor_NeighborIsRemovedFromNeighborCollection()
         {
-            Node node = GetNodeWith("initialValue");
-            Node neighbor = GetNodeWith("neighbor");
+            var node = new Node("initialValue");
+            var neighbor = new Node("neighbor");
             node.AddNeighbor(neighbor, 0);
 
             node.RemoveNeighbor(neighbor);
@@ -82,8 +82,8 @@ namespace Graphs.Tests
         [ExpectedException(typeof(NeighborNotFoundException))]
         public void When_NodeDoesNotContainNeighbor_RetreivingCostToAnInexistingNeighborThrowsException()
         {
-            Node node = GetNodeWith("initialValue");
-            Node neighbor = GetNodeWith("neighbor");
+            var node = new Node("initialValue");
+            var neighbor = new Node("neighbor");
 
             node.GetCostTo(neighbor);
         }
@@ -91,17 +91,12 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_NodeContainsNeighbor_TheCorrectCostToNeighborIsReturned()
         {
-            Node node = GetNodeWith("initialValue");
-            Node neighbor = GetNodeWith("neighbor");
+            var node = new Node("initialValue");
+            var neighbor = new Node("neighbor");
             
             node.AddNeighbor(neighbor,5);
 
             Assert.AreEqual(5, node.GetCostTo(neighbor));
-        }
-
-        private static Node GetNodeWith(string initialValue)
-        {
-            return new Node(initialValue);
         }
     }
 }
