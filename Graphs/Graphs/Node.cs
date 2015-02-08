@@ -17,6 +17,11 @@ namespace Graphs
 
         public void AddNeighbor(Node neighbor, int cost)
         {
+            if (HasNeighbor(neighbor))
+            {
+                throw new DuplicatedNeighborException();
+            }
+
             neighbors.Add(neighbor, cost);
         }
 

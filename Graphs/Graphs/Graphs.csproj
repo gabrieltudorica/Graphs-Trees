@@ -39,9 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectedGraph.cs" />
+    <Compile Include="Exceptions\DuplicatedNeighborException.cs" />
     <Compile Include="Exceptions\NeighborNotFoundException.cs" />
+    <Compile Include="Exceptions\NodeAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\NodeNotFoundException.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UndirectedGraph.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -36,7 +36,18 @@ namespace Graphs.Tests
         }
 
         [TestMethod]
-        public void When_NodeContainsNeighbor_NodeRecognizesItAsNeighbor()
+        [ExpectedException(typeof(DuplicatedNeighborException))]
+        public void When_DuplicatedNeighborIsAddedToNode_ExceptionIsThrown()
+        {
+            var node = new Node("initialValue");
+            var neighbor = new Node("neighbor");            
+            node.AddNeighbor(neighbor, 0);
+
+            node.AddNeighbor(neighbor, 0);
+        }
+
+        [TestMethod]
+        public void When_NodeContainsNeighbor_HasNeighborReturnsTrue()
         {
             var node = new Node("initialValue");
             var neighbor = new Node("neighbor");
@@ -47,7 +58,7 @@ namespace Graphs.Tests
         }
 
         [TestMethod]
-        public void When_NodeDoesNotContainNeighbor_NodeWillNotRecognizeNeighbor()
+        public void When_NodeDoesNotContainNeighbor_HasNeighborReturnsFalse()
         {
             var node = new Node("initialValue");
             var neighbor = new Node("neighbor");
