@@ -32,10 +32,12 @@ namespace Graphs
 
         public void RemoveNeighbor(Node neighbor)
         {
-            if (HasNeighbor(neighbor))
+            if (!HasNeighbor(neighbor))
             {
-                neighbors.Remove(neighbor);
+                throw new NeighborNotFoundException();                
             }
+
+            neighbors.Remove(neighbor);
         }
 
         public bool HasNeighbor(Node neighbor)
