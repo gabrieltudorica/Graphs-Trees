@@ -39,11 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dijkstra.cs" />
     <Compile Include="DirectedGraph.cs" />
     <Compile Include="Exceptions\DuplicatedNeighborException.cs" />
     <Compile Include="Exceptions\NeighborNotFoundException.cs" />
     <Compile Include="Exceptions\NodeAlreadyExistsException.cs" />
     <Compile Include="Exceptions\NodeNotFoundException.cs" />
+    <Compile Include="Exceptions\SmallGraphException.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
