@@ -10,7 +10,7 @@ namespace Graphs.Tests
     {
         [TestMethod]
         [ExpectedException(typeof(SmallGraphException))]
-        public void When_GraphHasBelowTwoNodes_ExceptionIsThrown()
+        public void When_GraphHasUnderTwoNodes_ExceptionIsThrown()
         {
             var graph = new DirectedGraph();
 
