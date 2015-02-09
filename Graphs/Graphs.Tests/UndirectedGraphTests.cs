@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Graphs.Exceptions;
+﻿using Graphs.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Graphs.Tests
@@ -34,31 +33,25 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_EdgeIsAdded_ToNodeBecomesNeighborOfFromNodeAndViceversa()
         {
-            const string fromNodeValue = "someValue";
-            const string toNodeValue = "someOtherValue";
-
-            var from = new Node(fromNodeValue);
-            var to = new Node(toNodeValue);
+            var from = new Node("someValue");
+            var to = new Node("someOtherValue");
             var graph = new UndirectedGraph();
             graph.AddNode(from);
             graph.AddNode(to);
 
             graph.AddEdge(from, to, 5);
-            
-            Node fromNodeInGraph = graph.GetNodeByValue(fromNodeValue);
-            Node toNodeInGraph = graph.GetNodeByValue(toNodeValue);
-            Assert.IsTrue(fromNodeInGraph.HasNeighbor(toNodeInGraph));
-            Assert.AreEqual(5, fromNodeInGraph.GetCostTo(toNodeInGraph));            
-            Assert.IsTrue(toNodeInGraph.HasNeighbor(fromNodeInGraph));
-            Assert.AreEqual(5, toNodeInGraph.GetCostTo(fromNodeInGraph));
+
+            Assert.IsTrue(from.HasNeighbor(to));
+            Assert.AreEqual(5, from.GetCostTo(to));            
+            Assert.IsTrue(to.HasNeighbor(from));
+            Assert.AreEqual(5, to.GetCostTo(from));
         }
 
         [TestMethod]
         [ExpectedException(typeof(DuplicatedNeighborException))]
         public void When_EdgeIsDuplicated_ExceptionIsThrown()
         {
-            const string fromNodeValue = "someValue";
-            var from = new Node(fromNodeValue);
+            var from = new Node("someValue");
             var to = new Node("someOtherValue");
             var graph = new UndirectedGraph();
             graph.AddNode(from);
@@ -66,27 +59,23 @@ namespace Graphs.Tests
             graph.AddEdge(from, to, 5);
 
             graph.AddEdge(from, to, 5);
-
-            Node nodeWithNeighbor = graph.GetNodeByValue(fromNodeValue);
-            Assert.IsTrue(nodeWithNeighbor.HasNeighbor(to));
-            Assert.AreEqual(5, nodeWithNeighbor.GetCostTo(to));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NodeNotFoundException))]
         public void When_InexistentNodeInGraphIsRemoved_ExceptionIsThrown()
         {
-            var node = new Node("someValue");
             var graph = new UndirectedGraph();
 
-            graph.RemoveNode(node);
+            graph.RemoveNode(new Node("someValue"));
         }
 
         [TestMethod]
         public void When_NodeIsRemovedFromGraph_GraphNodesDoNotContainRemovedNode()
         {
             var node = new Node("someValue");
-            Graph graph = GetGraphWith(node);
+            var graph = new UndirectedGraph();
+            graph.AddNode(node);
 
             graph.RemoveNode(node);
 
@@ -97,8 +86,7 @@ namespace Graphs.Tests
         [TestMethod]
         public void When_NodeIsRemovedFromGraph_AllEdgesToTheRemovedNodeAreCleared()
         {
-            const string fromNodeValue = "someValue";
-            var from = new Node(fromNodeValue);
+            var from = new Node("someValue");
             var to = new Node("someOtherValue");
             var to2 = new Node("anotherValue");
             var graph = new UndirectedGraph();
@@ -110,21 +98,12 @@ namespace Graphs.Tests
 
             graph.RemoveNode(from);
 
-            IEnumerable<Node> graphNodes = graph.GetNodes();
-            foreach (Node node in graphNodes)
+            foreach (Node node in graph.GetNodes())
             {
                 Assert.IsFalse(node.HasNeighbor(from));
             }
 
             Assert.IsFalse(graph.HasNode(from));
         }       
-
-        private static UndirectedGraph GetGraphWith(Node node)
-        {
-            var graph = new UndirectedGraph();
-            graph.AddNode(node);
-
-            return graph;
-        }
     }
 }
