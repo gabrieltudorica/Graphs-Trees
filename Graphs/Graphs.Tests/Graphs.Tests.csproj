@@ -51,6 +51,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DirectedGraphTests.cs" />
+    <Compile Include="GraphBase.cs" />
+    <Compile Include="GraphBaseTests.cs" />
     <Compile Include="NodeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UndirectedGraphTests.cs" />
